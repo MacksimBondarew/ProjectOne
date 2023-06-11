@@ -1,43 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Text,
     StyleSheet,
     View,
     TextInput,
     TouchableOpacity,
+    KeyboardAvoidingView, 
+    Platform,
+    TouchableWithoutFeedback,
+    Keyboard
 } from "react-native";
-import PlusPhoto from "../svg/PlusPhoto";
+import PlusPhoto from "../assets/svg/PlusPhoto";
 
 export default function LoginScreen() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const deliveryUserData = () => {
+        const user = {
+            email,
+            password,
+        };
+        console.log(user);
+    };
+
     return (
-        <>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}  >
             <View style={stylesLogin.form}>
                 <View style={stylesLogin.image}></View>
                 <TouchableOpacity>
                     <PlusPhoto style={stylesLogin.icon} />
                 </TouchableOpacity>
                 <Text style={stylesLogin.title}>Увійти</Text>
-                <TextInput
-                    style={stylesLogin.input}
-                    placeholder="Адреса електронної пошти"
-                />
-                <View>
+                <KeyboardAvoidingView
+                behavior={Platform.OS == "ios" ? "padding" : "height"}
+                >
                     <TextInput
-                        style={stylesLogin.lastInput}
-                        placeholder="Пароль"
-                    ></TextInput>
-                    <TouchableOpacity style={stylesLogin.showPassword}>
-                        <Text style={stylesLogin.textShow}>Показати</Text>
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={stylesLogin.buttonForm}>
+                        style={stylesLogin.input}
+                        placeholder="Адреса електронної пошти"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                    <View>
+                        <TextInput
+                            style={stylesLogin.lastInput}
+                            placeholder="Пароль"
+                            value={password}
+                            onChangeText={setPassword}
+                        ></TextInput>
+                        <TouchableOpacity style={stylesLogin.showPassword}>
+                            <Text style={stylesLogin.textShow}>Показати</Text>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAvoidingView>
+                <TouchableOpacity style={stylesLogin.buttonForm} onPress={deliveryUserData}>
                     <Text style={stylesLogin.textButton}>Увійти</Text>
                 </TouchableOpacity>
                 <Text style={stylesLogin.textLink}>
                     Немає акаунту? Зареєструватися
                 </Text>
             </View>
-        </>
+        </TouchableWithoutFeedback>
     );
 }
 

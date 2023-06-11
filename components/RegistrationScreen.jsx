@@ -1,35 +1,69 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     Text,
     StyleSheet,
     View,
     TextInput,
     TouchableOpacity,
+    Platform,
+    KeyboardAvoidingView,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
-import PlusPhoto from "../svg/PlusPhoto";
+import PlusPhoto from "../assets/svg/PlusPhoto";
 
 export default function RegistrationScreen() {
+    const [email, setEmail] = useState("");
+    const [login, setLogin] = useState("");
+    const [password, setPassword] = useState("");
+
+    const deliveryUserData = () => {
+        const user = {
+            login,
+            email,
+            password,
+        };
+        console.log(user);
+    };
+
     return (
-        <>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
             <View style={stylesRegister.form}>
                 <View style={stylesRegister.image}></View>
-                <TouchableOpacity><PlusPhoto style={stylesRegister.icon} /></TouchableOpacity>
+                <TouchableOpacity>
+                    <PlusPhoto style={stylesRegister.icon} />
+                </TouchableOpacity>
                 <Text style={stylesRegister.title}>Реєстрація</Text>
-                <TextInput style={stylesRegister.input} placeholder="Логін" />
-                <TextInput
-                    style={stylesRegister.input}
-                    placeholder="Адреса електронної пошти"
-                />
-                <View>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                >
                     <TextInput
-                        style={stylesRegister.lastInput}
-                        placeholder="Пароль"
-                    ></TextInput>
-                    <TouchableOpacity style={stylesRegister.showPassword}>
-                        <Text style={stylesRegister.textShow}>Показати</Text>
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={stylesRegister.buttonForm}>
+                        style={stylesRegister.input}
+                        placeholder="Логін"
+                        value={login}
+                        onChangeText={setLogin}
+                    />
+                    <TextInput
+                        style={stylesRegister.input}
+                        placeholder="Адреса електронної пошти"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                    <View>
+                        <TextInput
+                            style={stylesRegister.lastInput}
+                            placeholder="Пароль"
+                            value={password}
+                            onChangeText={setPassword}
+                        ></TextInput>
+                        <TouchableOpacity style={stylesRegister.showPassword}>
+                            <Text style={stylesRegister.textShow}>
+                                Показати
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAvoidingView>
+                <TouchableOpacity style={stylesRegister.buttonForm} onPress={deliveryUserData} >
                     <Text style={stylesRegister.textButton}>
                         Зареєстуватися
                     </Text>
@@ -38,7 +72,7 @@ export default function RegistrationScreen() {
                     Вже є акаунт? Увійти
                 </Text>
             </View>
-        </>
+        </TouchableWithoutFeedback>
     );
 }
 
@@ -95,7 +129,7 @@ const stylesRegister = StyleSheet.create({
     },
     textShow: {
         color: "#1B4371",
-        fontFamily:  "Roboto",
+        fontFamily: "Roboto",
         fontSize: 16,
         lineHeight: 19,
     },
