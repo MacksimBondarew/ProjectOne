@@ -16,8 +16,14 @@ export default function RegistrationScreen() {
     const [email, setEmail] = useState("");
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const deliveryUserData = () => {
+        if (emailError) {
+            console.log("Please enter a valid email.");
+            return;
+        }
         const user = {
             login,
             email,
@@ -25,9 +31,22 @@ export default function RegistrationScreen() {
         };
         console.log(user);
     };
+    const validateEmail = (text) => {
+        setEmail(text);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (reg.test(text) === false) {
+            setEmailError("Email is not correct");
+        } else {
+            setEmailError("");
+        }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={stylesRegister.form}>
                 <View style={stylesRegister.image}></View>
                 <TouchableOpacity>
@@ -47,23 +66,36 @@ export default function RegistrationScreen() {
                         style={stylesRegister.input}
                         placeholder="Адреса електронної пошти"
                         value={email}
-                        onChangeText={setEmail}
+                        onChangeText={validateEmail}
+                        type="email"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                     />
+                    {emailError ? (
+                        <Text style={stylesRegister.error}>{emailError}</Text>
+                    ) : null}
+                    <View></View>
                     <View>
                         <TextInput
                             style={stylesRegister.lastInput}
                             placeholder="Пароль"
                             value={password}
                             onChangeText={setPassword}
+                            secureTextEntry={!showPassword}
                         ></TextInput>
-                        <TouchableOpacity style={stylesRegister.showPassword}>
+                        <TouchableOpacity
+                            style={stylesRegister.showPassword}
+                            onPress={togglePasswordVisibility}
+                        >
                             <Text style={stylesRegister.textShow}>
-                                Показати
+                                {showPassword ? "Приховати" : "Показати"}
                             </Text>
                         </TouchableOpacity>
                     </View>
                 </KeyboardAvoidingView>
-                <TouchableOpacity style={stylesRegister.buttonForm} onPress={deliveryUserData} >
+                <TouchableOpacity
+                    style={stylesRegister.buttonForm}
+                    onPress={deliveryUserData}
+                >
                     <Text style={stylesRegister.textButton}>
                         Зареєстуватися
                     </Text>
@@ -151,5 +183,9 @@ const stylesRegister = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         color: "#1B4371",
+    },
+    error: {
+        color: "red",
+        marginBottom: 16,
     },
 });

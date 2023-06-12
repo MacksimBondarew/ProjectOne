@@ -5,27 +5,46 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    KeyboardAvoidingView, 
+    KeyboardAvoidingView,
     Platform,
     TouchableWithoutFeedback,
-    Keyboard
+    Keyboard,
 } from "react-native";
 import PlusPhoto from "../assets/svg/PlusPhoto";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const deliveryUserData = () => {
+        if (emailError) {
+            console.log("Please enter a valid email.");
+            return;
+        }
         const user = {
             email,
             password,
         };
         console.log(user);
     };
+    const validateEmail = (text) => {
+        setEmail(text);
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (reg.test(text) === false) {
+            setEmailError("Email is not correct");
+        } else {
+            setEmailError("");
+        }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}  >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={stylesLogin.form}>
                 <View style={stylesLogin.image}></View>
                 <TouchableOpacity>
@@ -33,27 +52,37 @@ export default function LoginScreen() {
                 </TouchableOpacity>
                 <Text style={stylesLogin.title}>Увійти</Text>
                 <KeyboardAvoidingView
-                behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
                 >
                     <TextInput
                         style={stylesLogin.input}
                         placeholder="Адреса електронної пошти"
                         value={email}
-                        onChangeText={setEmail}
+                        onChangeText={(text) => validateEmail(text)}
+                        type="email"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                     />
+                    {emailError ? (
+                        <Text style={stylesLogin.error}>{emailError}</Text>
+                    ) : null}
+                    <View></View>
                     <View>
                         <TextInput
                             style={stylesLogin.lastInput}
                             placeholder="Пароль"
                             value={password}
                             onChangeText={setPassword}
+                            secureTextEntry={!showPassword}
                         ></TextInput>
-                        <TouchableOpacity style={stylesLogin.showPassword}>
-                            <Text style={stylesLogin.textShow}>Показати</Text>
+                        <TouchableOpacity style={stylesLogin.showPassword} onPress={togglePasswordVisibility}>
+                            <Text style={stylesLogin.textShow}>{showPassword ? "Приховати" : "Показати"}</Text>
                         </TouchableOpacity>
                     </View>
                 </KeyboardAvoidingView>
-                <TouchableOpacity style={stylesLogin.buttonForm} onPress={deliveryUserData}>
+                <TouchableOpacity
+                    style={stylesLogin.buttonForm}
+                    onPress={deliveryUserData}
+                >
                     <Text style={stylesLogin.textButton}>Увійти</Text>
                 </TouchableOpacity>
                 <Text style={stylesLogin.textLink}>
@@ -139,5 +168,9 @@ const stylesLogin = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         color: "#1B4371",
+    },
+    error: {
+        color: "red",
+        marginBottom: 16,
     },
 });
