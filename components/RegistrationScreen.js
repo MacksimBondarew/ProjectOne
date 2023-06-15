@@ -9,8 +9,11 @@ import {
     KeyboardAvoidingView,
     TouchableWithoutFeedback,
     Keyboard,
+    ImageBackground,
 } from "react-native";
 import PlusPhoto from "../assets/svg/PlusPhoto";
+import BackgroundImage from "../assets/image/BackgroundImage.png";
+import { useNavigation } from "@react-navigation/native";
 
 export default function RegistrationScreen() {
     const [email, setEmail] = useState("");
@@ -18,6 +21,7 @@ export default function RegistrationScreen() {
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const navigation = useNavigation();
 
     const deliveryUserData = () => {
         if (emailError) {
@@ -47,63 +51,95 @@ export default function RegistrationScreen() {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={stylesRegister.form}>
-                <View style={stylesRegister.image}></View>
-                <TouchableOpacity>
-                    <PlusPhoto style={stylesRegister.icon} />
-                </TouchableOpacity>
-                <Text style={stylesRegister.title}>Реєстрація</Text>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS == "ios" ? "padding" : "height"}
-                >
-                    <TextInput
-                        style={stylesRegister.input}
-                        placeholder="Логін"
-                        value={login}
-                        onChangeText={setLogin}
-                    />
-                    <TextInput
-                        style={stylesRegister.input}
-                        placeholder="Адреса електронної пошти"
-                        value={email}
-                        onChangeText={validateEmail}
-                        type="email"
-                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                    />
-                    {emailError ? (
-                        <Text style={stylesRegister.error}>{emailError}</Text>
-                    ) : null}
-                    <View></View>
-                    <View>
-                        <TextInput
-                            style={stylesRegister.lastInput}
-                            placeholder="Пароль"
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry={!showPassword}
-                        ></TextInput>
-                        <TouchableOpacity
-                            style={stylesRegister.showPassword}
-                            onPress={togglePasswordVisibility}
+            <ImageBackground
+                source={BackgroundImage}
+                style={stylesRegister.imageBack}
+            >
+                <View style={stylesRegister.container}>
+                    <View style={stylesRegister.form}>
+                        <View style={stylesRegister.image}></View>
+                        <TouchableOpacity>
+                            <PlusPhoto style={stylesRegister.icon} />
+                        </TouchableOpacity>
+                        <Text style={stylesRegister.title}>Реєстрація</Text>
+                        <KeyboardAvoidingView
+                            behavior={
+                                Platform.OS == "ios" ? "padding" : "height"
+                            }
                         >
-                            <Text style={stylesRegister.textShow}>
-                                {showPassword ? "Приховати" : "Показати"}
+                            <TextInput
+                                style={stylesRegister.input}
+                                placeholder="Логін"
+                                value={login}
+                                onChangeText={setLogin}
+                            />
+                            <TextInput
+                                style={stylesRegister.input}
+                                placeholder="Адреса електронної пошти"
+                                value={email}
+                                onChangeText={validateEmail}
+                                type="email"
+                                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                            />
+                            {emailError ? (
+                                <Text style={stylesRegister.error}>
+                                    {emailError}
+                                </Text>
+                            ) : null}
+                            <View></View>
+                            <View>
+                                <TextInput
+                                    style={stylesRegister.lastInput}
+                                    placeholder="Пароль"
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    secureTextEntry={!showPassword}
+                                ></TextInput>
+                                <TouchableOpacity
+                                    style={stylesRegister.showPassword}
+                                    onPress={togglePasswordVisibility}
+                                >
+                                    <Text style={stylesRegister.textShow}>
+                                        {showPassword
+                                            ? "Приховати"
+                                            : "Показати"}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </KeyboardAvoidingView>
+                        <TouchableOpacity
+                            style={stylesRegister.buttonForm}
+                            onPress={deliveryUserData}
+                        >
+                            <Text style={stylesRegister.textButton}>
+                                Зареєстуватися
                             </Text>
                         </TouchableOpacity>
+                        <View style={stylesRegister.link}>
+                            <Text style={stylesRegister.textLink}>
+                                Вже є акаунт?
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    navigation.navigate("Login")
+                                }
+                            >
+                                <Text
+                                    style={[
+                                        stylesRegister.textLink,
+                                        {
+                                            textDecorationLine: "underline",
+                                            marginLeft: 2,
+                                        },
+                                    ]}
+                                >
+                                    Увійти
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </KeyboardAvoidingView>
-                <TouchableOpacity
-                    style={stylesRegister.buttonForm}
-                    onPress={deliveryUserData}
-                >
-                    <Text style={stylesRegister.textButton}>
-                        Зареєстуватися
-                    </Text>
-                </TouchableOpacity>
-                <Text style={stylesRegister.textLink}>
-                    Вже є акаунт? Увійти
-                </Text>
-            </View>
+                </View>
+            </ImageBackground>
         </TouchableWithoutFeedback>
     );
 }
@@ -120,6 +156,14 @@ const stylesRegister = StyleSheet.create({
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         textAlign: "center",
+    },
+    imageBack: {
+        flex: 1,
+    },
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "flex-end",
     },
     image: {
         width: 120,
@@ -183,9 +227,17 @@ const stylesRegister = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         color: "#1B4371",
+        alignItems: "center",
     },
     error: {
         color: "red",
         marginBottom: 16,
+    },
+    link: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
     },
 });

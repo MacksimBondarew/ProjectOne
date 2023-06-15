@@ -9,14 +9,18 @@ import {
     Platform,
     TouchableWithoutFeedback,
     Keyboard,
+    ImageBackground,
 } from "react-native";
 import PlusPhoto from "../assets/svg/PlusPhoto";
+import { useNavigation } from "@react-navigation/native";
+import BackgroundImage from "../assets/image/BackgroundImage.png";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const navigation = useNavigation();
 
     const deliveryUserData = () => {
         if (emailError) {
@@ -28,6 +32,7 @@ export default function LoginScreen() {
             password,
         };
         console.log(user);
+        navigation.navigate("PostScreen")
     };
     const validateEmail = (text) => {
         setEmail(text);
@@ -45,50 +50,87 @@ export default function LoginScreen() {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={stylesLogin.form}>
-                <View style={stylesLogin.image}></View>
-                <TouchableOpacity>
-                    <PlusPhoto style={stylesLogin.icon} />
-                </TouchableOpacity>
-                <Text style={stylesLogin.title}>Увійти</Text>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS == "ios" ? "padding" : "height"}
-                >
-                    <TextInput
-                        style={stylesLogin.input}
-                        placeholder="Адреса електронної пошти"
-                        value={email}
-                        onChangeText={(text) => validateEmail(text)}
-                        type="email"
-                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-                    />
-                    {emailError ? (
-                        <Text style={stylesLogin.error}>{emailError}</Text>
-                    ) : null}
-                    <View></View>
-                    <View>
-                        <TextInput
-                            style={stylesLogin.lastInput}
-                            placeholder="Пароль"
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry={!showPassword}
-                        ></TextInput>
-                        <TouchableOpacity style={stylesLogin.showPassword} onPress={togglePasswordVisibility}>
-                            <Text style={stylesLogin.textShow}>{showPassword ? "Приховати" : "Показати"}</Text>
+            <ImageBackground
+                source={BackgroundImage}
+                style={stylesLogin.imageBack}
+            >
+                <View style={stylesLogin.container}>
+                    <View style={stylesLogin.form}>
+                        <View style={stylesLogin.image}></View>
+                        <TouchableOpacity>
+                            <PlusPhoto style={stylesLogin.icon} />
                         </TouchableOpacity>
+                        <Text style={stylesLogin.title}>Увійти</Text>
+                        <KeyboardAvoidingView
+                            behavior={
+                                Platform.OS == "ios" ? "padding" : "height"
+                            }
+                        >
+                            <TextInput
+                                style={stylesLogin.input}
+                                placeholder="Адреса електронної пошти"
+                                value={email}
+                                onChangeText={(text) => validateEmail(text)}
+                                type="email"
+                                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                            />
+                            {emailError ? (
+                                <Text style={stylesLogin.error}>
+                                    {emailError}
+                                </Text>
+                            ) : null}
+                            <View></View>
+                            <View>
+                                <TextInput
+                                    style={stylesLogin.lastInput}
+                                    placeholder="Пароль"
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    secureTextEntry={!showPassword}
+                                ></TextInput>
+                                <TouchableOpacity
+                                    style={stylesLogin.showPassword}
+                                    onPress={togglePasswordVisibility}
+                                >
+                                    <Text style={stylesLogin.textShow}>
+                                        {showPassword
+                                            ? "Приховати"
+                                            : "Показати"}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </KeyboardAvoidingView>
+                        <TouchableOpacity
+                            style={stylesLogin.buttonForm}
+                            onPress={deliveryUserData}
+                        >
+                            <Text style={stylesLogin.textButton}>Увійти</Text>
+                        </TouchableOpacity>
+                        <View style={stylesLogin.link}>
+                            <Text style={stylesLogin.textLink}>
+                                Немає акаунту?
+                            </Text>
+                            <TouchableOpacity
+                                onPress={() =>
+                                    navigation.navigate("Registration")
+                                }
+                            >
+                                <Text
+                                    style={[
+                                        stylesLogin.textLink,
+                                        {
+                                            textDecorationLine: "underline",
+                                            marginLeft: 2,
+                                        },
+                                    ]}
+                                >
+                                    Зареєстуватися
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </KeyboardAvoidingView>
-                <TouchableOpacity
-                    style={stylesLogin.buttonForm}
-                    onPress={deliveryUserData}
-                >
-                    <Text style={stylesLogin.textButton}>Увійти</Text>
-                </TouchableOpacity>
-                <Text style={stylesLogin.textLink}>
-                    Немає акаунту? Зареєструватися
-                </Text>
-            </View>
+                </View>
+            </ImageBackground>
         </TouchableWithoutFeedback>
     );
 }
@@ -105,6 +147,14 @@ const stylesLogin = StyleSheet.create({
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         textAlign: "center",
+    },
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "flex-end",
+    },
+    imageBack: {
+        flex: 1,
     },
     image: {
         width: 120,
@@ -168,9 +218,17 @@ const stylesLogin = StyleSheet.create({
         fontSize: 16,
         textAlign: "center",
         color: "#1B4371",
+        alignItems: "center",
     },
     error: {
         color: "red",
         marginBottom: 16,
+    },
+    link: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
