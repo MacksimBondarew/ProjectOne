@@ -1,21 +1,59 @@
 import { StyleSheet, Text, View } from "react-native";
+import test from "../assets/image/test.png";
+import { Image } from "react-native";
 
 export default function PostsScreen() {
-    return <View style={stylesPostScreen.container}>
-      <Text>
-        Macksim
-      </Text>
-    </View>;
+    return (
+        <View style={stylesPostScreen.container}>
+            <View style={stylesPostScreen.user}>
+                <Image style={stylesPostScreen.image} source={test} />
+                <View>
+                    <Text style={stylesPostScreen.name}>Natali Romanova</Text>
+                    <Text style={stylesPostScreen.email}>
+                        email@example.com
+                    </Text>
+                </View>
+            </View>
+        </View>
+    );
 }
 
 const stylesPostScreen = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "flex-start",
         paddingRight: 16,
         paddingLeft: 16,
         paddingTop: 32,
-        backgroundColor: '#ffffff'
+        backgroundColor: "#FFFFFF",
+    },
+    user: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    image: {
+        marginRight: 8,
+        width: 60,
+        height: 60,
+        borderRadius: 16,
+    },
+    name: {
+        fontFamily: "Roboto",
+        fontStyle: "normal",
+        fontWeight: 700,
+        fontSize: 13,
+        lineHeight: 15,
+        display: "flex",
+        alignItems: "center",
+    },
+    email: {
+        fontFamily: "Roboto",
+        fontStyle: "normal",
+        fontWeight: 400,
+        fontSize: 11,
+        lineHeight: 15,
+        display: "flex",
+        alignItems: "center",
     },
 });

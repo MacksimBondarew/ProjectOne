@@ -23,8 +23,8 @@ export default function LoginScreen() {
     const navigation = useNavigation();
 
     const deliveryUserData = () => {
-        if (emailError) {
-            console.log("Please enter a valid email.");
+        if (emailError || email === '' || password === '') {
+            console.log("Please enter a valid email and password");
             return;
         }
         const user = {
@@ -36,7 +36,7 @@ export default function LoginScreen() {
     };
     const validateEmail = (text) => {
         setEmail(text);
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        let reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (reg.test(text) === false) {
             setEmailError("Email is not correct");
         } else {
@@ -70,9 +70,8 @@ export default function LoginScreen() {
                                 style={stylesLogin.input}
                                 placeholder="Адреса електронної пошти"
                                 value={email}
-                                onChangeText={(text) => validateEmail(text)}
+                                onChangeText={validateEmail}
                                 type="email"
-                                pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                             />
                             {emailError ? (
                                 <Text style={stylesLogin.error}>
