@@ -1,5 +1,4 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CreatePostsScreen from "./CreatePostsScreen";
 import Profile from "./Profile";
@@ -12,18 +11,18 @@ import { useNavigation } from "@react-navigation/native";
 export default function BottomNavigation() {
     const Tabs = createBottomTabNavigator();
     const navigation = useNavigation();
+    const [isProfileScreenActive, setIsProfileScreenActive] = useState(false);
     return (
         <Tabs.Navigator
             initialRouteName="PostsScreen"
             screenOptions={{
                 tabBarStyle: {
-                    height: 60,
-                    paddingTop: 9 // Додати відступ знизу
+                    height: 80,
+                    paddingTop: 9,
+                    paddingBottom: 20
                 },
             }}
-            tabBarOptions={{ showLabel: false,         tabBarStyle: {
-                paddingTop: 5000, // Додати відступ знизу
-            }, }}
+            tabBarOptions={{ showLabel: false,        }}
         >
             <Tabs.Screen
                 options={{
@@ -122,6 +121,7 @@ export default function BottomNavigation() {
                     tabBarIcon: () => (
                         <AntDesign name="user" size={24} color="#212121CC" />
                     ),
+                    headerShown: false
                 }}
                 name="Profile"
                 component={Profile}
@@ -129,12 +129,3 @@ export default function BottomNavigation() {
         </Tabs.Navigator>
     );
 }
-
-const stylesBottomNavigation = StyleSheet.create({
-    tabsContainer: {
-        flex: 1,
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
