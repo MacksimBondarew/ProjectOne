@@ -8,8 +8,8 @@ import {
     KeyboardAvoidingView,
     Platform,
     TouchableWithoutFeedback,
-    Keyboard,
     ImageBackground,
+    Keyboard
 } from "react-native";
 import PlusPhoto from "../assets/svg/PlusPhoto";
 import { useNavigation } from "@react-navigation/native";
@@ -32,7 +32,7 @@ export default function LoginScreen() {
             password,
         };
         console.log(user);
-        navigation.navigate("PostScreen")
+        navigation.navigate("BottomNavigation");
     };
     const validateEmail = (text) => {
         setEmail(text);

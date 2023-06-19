@@ -3,12 +3,11 @@ import RegistrationScreen from "./components/RegistrationScreen";
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import LoginScreen from "./components/LoginScreen";
-import PostsScreen from "./components/PostsScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Button } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
+import BottomNavigation from "./components/BottomNavigation";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -49,7 +48,7 @@ export default function App() {
 
     return (
         <NavigationContainer style={styleApp.container}>
-            <MainStack.Navigator initialRouteName="Login">
+            <MainStack.Navigator initialRouteName="BottomNavigation">
                 <MainStack.Screen
                     name="Registration"
                     options={{
@@ -65,9 +64,11 @@ export default function App() {
                     component={LoginScreen}
                 />
                 <MainStack.Screen
-                    name="PostScreen"
-                    options={PostsScreenOptions}
-                    component={PostsScreen}
+                    name="BottomNavigation"
+                    options={{
+                        headerShown: false,
+                    }}
+                    component={BottomNavigation}
                 />
             </MainStack.Navigator>
         </NavigationContainer>
