@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CreatePostsScreen from "./CreatePostsScreen";
 import Profile from "./Profile";
@@ -18,10 +18,10 @@ export default function Home() {
                 tabBarStyle: {
                     height: 80,
                     paddingTop: 9,
-                    paddingBottom: 20
+                    paddingBottom: 20,
                 },
             }}
-            tabBarOptions={{ showLabel: false,        }}
+            tabBarOptions={{ showLabel: false, activeTintColor: "orange" }}
         >
             <Tabs.Screen
                 options={{
@@ -120,7 +120,7 @@ export default function Home() {
                     tabBarIcon: () => (
                         <AntDesign name="user" size={24} color="#212121CC" />
                     ),
-                    headerShown: false
+                    headerShown: false,
                 }}
                 name="Profile"
                 component={Profile}

@@ -2,13 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import test from "../assets/image/test.png";
 import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import CreatePostsScreen from "./CreatePostsScreen";
-import Profile from "./Profile";
-import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function PostsScreen() {
-    const Tabs = createBottomTabNavigator();
 
     return (
         <View style={stylesPostScreen.container}>
