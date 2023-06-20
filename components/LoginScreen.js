@@ -31,8 +31,7 @@ export default function LoginScreen() {
             email,
             password,
         };
-        console.log(user);
-        navigation.navigate("BottomNavigation");
+        navigation.navigate("Home");
     };
     const validateEmail = (text) => {
         setEmail(text);

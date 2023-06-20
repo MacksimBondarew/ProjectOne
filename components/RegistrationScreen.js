@@ -33,7 +33,7 @@ export default function RegistrationScreen() {
             email,
             password,
         };
-        console.log(user);
+        navigation.navigate("Home");
     };
     const validateEmail = (text) => {
         setEmail(text);

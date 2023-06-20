@@ -7,7 +7,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
-import BottomNavigation from "./components/BottomNavigation";
+
+import BottomNavigation from "./components/Home";
+import Home from "./components/Home";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -48,7 +50,7 @@ export default function App() {
 
     return (
         <NavigationContainer style={styleApp.container}>
-            <MainStack.Navigator initialRouteName="BottomNavigation">
+            <MainStack.Navigator initialRouteName="Login">
                 <MainStack.Screen
                     name="Registration"
                     options={{
@@ -64,11 +66,11 @@ export default function App() {
                     component={LoginScreen}
                 />
                 <MainStack.Screen
-                    name="BottomNavigation"
+                    name="Home"
                     options={{
                         headerShown: false,
                     }}
-                    component={BottomNavigation}
+                    component={Home}
                 />
             </MainStack.Navigator>
         </NavigationContainer>

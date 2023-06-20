@@ -8,10 +8,9 @@ import PostsScreen from "./PostsScreen";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-export default function BottomNavigation() {
+export default function Home() {
     const Tabs = createBottomTabNavigator();
     const navigation = useNavigation();
-    const [isProfileScreenActive, setIsProfileScreenActive] = useState(false);
     return (
         <Tabs.Navigator
             initialRouteName="PostsScreen"

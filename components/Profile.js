@@ -11,8 +11,11 @@ import test from "../assets/image/test.png";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import Message from "../assets/svg/Message";
 
 export default function Profile() {
+    const navigation = useNavigation();
     return (
         <ImageBackground
             source={BackgroundImage}
@@ -66,23 +69,22 @@ export default function Profile() {
                                 marginRight: 31,
                             }}
                         >
-                            <Feather
-                                name="message-circle"
-                                size={18}
-                                color="orange"
-                            />
                             <TouchableOpacity>
-                                <Text
-                                    style={{
-                                        fontWeight: 400,
-                                        fontSize: 16,
-                                        lineHeight: 19,
-                                        marginLeft: 9,
-                                    }}
-                                >
-                                    8
-                                </Text>
+                                <Message
+                                    size={18}
+                                />
                             </TouchableOpacity>
+                            <Text
+                                style={{
+                                    fontWeight: 400,
+                                    fontSize: 16,
+                                    lineHeight: 19,
+                                    marginLeft: 9,
+                                    width: "100%",
+                                }}
+                            >
+                                8
+                            </Text>
                         </View>
                         <View
                             style={{
@@ -91,25 +93,27 @@ export default function Profile() {
                                 height: 18,
                                 alignSelf: "flex-start",
                                 alignItems: "flex-start",
+                                width: '100%'
                             }}
                         >
-                            <Feather
-                                name="thumbs-up"
-                                size={18}
-                                color="orange"
-                            />
                             <TouchableOpacity>
-                                <Text
-                                    style={{
-                                        fontWeight: 400,
-                                        fontSize: 16,
-                                        lineHeight: 19,
-                                        marginLeft: 9,
-                                    }}
-                                >
-                                    155
-                                </Text>
+                                <Feather
+                                    name="thumbs-up"
+                                    size={18}
+                                    color="orange"
+                                />
                             </TouchableOpacity>
+                            <Text
+                                style={{
+                                    fontWeight: 400,
+                                    fontSize: 16,
+                                    lineHeight: 19,
+                                    marginLeft: 9,
+                                    width: "100%"
+                                }}
+                            >
+                                153
+                            </Text>
                         </View>
                     </View>
                     <View
