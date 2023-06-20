@@ -25,11 +25,11 @@ export default function Home() {
         >
             <Tabs.Screen
                 options={{
-                    tabBarIcon: () => (
+                    tabBarIcon: ({ focused }) => (
                         <Ionicons
                             name="grid-outline"
                             size={24}
-                            color="#212121CC"
+                            color={focused ? "orange" : "#212121CC"}
                         />
                     ),
 
@@ -117,8 +117,12 @@ export default function Home() {
             />
             <Tabs.Screen
                 options={{
-                    tabBarIcon: () => (
-                        <AntDesign name="user" size={24} color="#212121CC" />
+                    tabBarIcon: ({ focused }) => (
+                        <AntDesign
+                            name="user"
+                            size={24}
+                            color={focused ? "orange" : "#212121CC"}
+                        />
                     ),
                     headerShown: false,
                 }}
