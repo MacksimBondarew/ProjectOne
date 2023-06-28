@@ -40,7 +40,7 @@ const styleComentar = StyleSheet.create({
     },
     blockComentarForUser: {
         padding: 16,
-        width: "85%",
+        width: "90%",
 
         backgroundColor: "rgba(0, 0, 0, 0.03)",
         borderRadius: 6,
