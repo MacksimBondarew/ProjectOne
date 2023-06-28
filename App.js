@@ -1,11 +1,9 @@
 import "react-native-gesture-handler";
 import RegistrationScreen from "./components/RegistrationScreen";
 import { useFonts } from "expo-font";
-import { Ionicons } from "@expo/vector-icons";
 import LoginScreen from "./components/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 
 import BottomNavigation from "./components/Home";
@@ -23,34 +21,9 @@ export default function App() {
 
     const MainStack = createStackNavigator();
 
-    const PostsScreenOptions = {
-        title: "Публікації",
-        headerStyle: {
-            backgroundColor: "#FFFFFF",
-            display: "flex",
-            alignItems: "center",
-        },
-        headerTitleAlign: "center",
-        headerTitleStyle: {
-            fontWeight: "bold",
-            fontSize: 20,
-            textAlign: "center",
-        },
-        headerStyle: {
-            borderBottomWidth: 2,
-            borderBottomColor: "#E5E5E5",
-        },
-        headerLeft: null,
-        headerRight: () => (
-            <TouchableOpacity>
-                <Ionicons name="exit-outline" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-        ),
-    };
-
     return (
         <NavigationContainer style={styleApp.container}>
-            <MainStack.Navigator initialRouteName="Login">
+            <MainStack.Navigator initialRouteName="Home">
                 <MainStack.Screen
                     name="Registration"
                     options={{

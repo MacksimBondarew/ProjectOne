@@ -69,7 +69,7 @@ export default function Profile() {
                                 marginRight: 31,
                             }}
                         >
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('CommentScreen')}>
                                 <Message
                                     size={18}
                                 />
@@ -116,7 +116,8 @@ export default function Profile() {
                             </Text>
                         </View>
                     </View>
-                    <View
+                    <TouchableOpacity 
+                        onPress={() => navigation.navigate('MapScreen')}
                         style={{
                             flex: 1,
                             flexDirection: "row",
@@ -138,7 +139,7 @@ export default function Profile() {
                         >
                             Ukraine
                         </Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </ImageBackground>

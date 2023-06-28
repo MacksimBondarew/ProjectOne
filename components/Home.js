@@ -7,6 +7,8 @@ import { Ionicons } from "@expo/vector-icons";
 import PostsScreen from "./PostsScreen";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import CommentsScreen from "./CommentsScreen";
+import MapScreen from "./MapScreen";
 
 export default function Home() {
     const Tabs = createBottomTabNavigator();
@@ -20,8 +22,8 @@ export default function Home() {
                     paddingTop: 9,
                     paddingBottom: 20,
                 },
+                tabBarShowLabel: false,
             }}
-            tabBarOptions={{ showLabel: false, activeTintColor: "orange" }}
         >
             <Tabs.Screen
                 options={{
@@ -117,6 +119,45 @@ export default function Home() {
             />
             <Tabs.Screen
                 options={{
+                    title: "Коментарі",
+                    headerStyle: {
+                        backgroundColor: "#FFFFFF",
+                        display: "flex",
+                        alignItems: "center",
+                    },
+                    headerTitleAlign: "center",
+                    headerTitleStyle: {
+                        fontWeight: "bold",
+                        fontSize: 20,
+                        textAlign: "center",
+                    },
+                    headerStyle: {
+                        borderBottomWidth: 2,
+                        borderBottomColor: "#E5E5E5",
+                    },
+                    tabBarIcon: () => null,
+                    tabBarButton: () => null, 
+                    tabBarStyle: { display: "none" },
+                    headerLeft: () => (
+                        <TouchableOpacity>
+                            <AntDesign
+                                onPress={() =>
+                                    navigation.navigate("Profile")
+                                }
+                                name="arrowleft"
+                                size={24}
+                                color="black"
+                                marginLeft={16}
+                            />
+                        </TouchableOpacity>
+                    ),
+                }}
+                name="CommentScreen"
+                component={CommentsScreen}
+            />
+
+            <Tabs.Screen
+                options={{
                     tabBarIcon: ({ focused }) => (
                         <AntDesign
                             name="user"
@@ -128,6 +169,44 @@ export default function Home() {
                 }}
                 name="Profile"
                 component={Profile}
+            />
+                        <Tabs.Screen
+                options={{
+                    title: "Карта",
+                    headerStyle: {
+                        backgroundColor: "#FFFFFF",
+                        display: "flex",
+                        alignItems: "center",
+                    },
+                    headerTitleAlign: "center",
+                    headerTitleStyle: {
+                        fontWeight: "bold",
+                        fontSize: 20,
+                        textAlign: "center",
+                    },
+                    headerStyle: {
+                        borderBottomWidth: 2,
+                        borderBottomColor: "#E5E5E5",
+                    },
+                    tabBarIcon: () => null,
+                    tabBarButton: () => null, 
+                    tabBarStyle: { display: "none" },
+                    headerLeft: () => (
+                        <TouchableOpacity>
+                            <AntDesign
+                                onPress={() =>
+                                    navigation.navigate("Profile")
+                                }
+                                name="arrowleft"
+                                size={24}
+                                color="black"
+                                marginLeft={16}
+                            />
+                        </TouchableOpacity>
+                    ),
+                }}
+                name="MapScreen"
+                component={MapScreen}
             />
         </Tabs.Navigator>
     );
