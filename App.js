@@ -5,8 +5,6 @@ import LoginScreen from "./components/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet } from "react-native";
-
-import BottomNavigation from "./components/Home";
 import Home from "./components/Home";
 
 export default function App() {
