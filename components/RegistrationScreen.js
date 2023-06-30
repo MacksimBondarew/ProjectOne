@@ -14,25 +14,30 @@ import {
 import PlusPhoto from "../assets/svg/PlusPhoto";
 import BackgroundImage from "../assets/image/BackgroundImage.png";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../redux/operations";
 
 export default function RegistrationScreen() {
     const [email, setEmail] = useState("");
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const deliveryUserData = () => {
-        if (emailError || email === "" || password === "") {
+        if (passwordError || emailError || email === "" || password === "") {
             console.log("Please enter a valid email and password");
             return;
         }
         const user = {
             login,
-            email,
-            password,
+            email: email.toString(),
+            password: password.toString(),
         };
+        dispatch(registerUser(user));
         navigation.navigate("Home", user);
     };
     const validateEmail = (text) => {
@@ -42,6 +47,16 @@ export default function RegistrationScreen() {
             setEmailError("Email is not correct");
         } else {
             setEmailError("");
+        }
+    };
+
+    const validatePassword = (text) => {
+        setPassword(text);
+        let reg = /^.{6,}$/;
+        if (reg.test(text) === false) {
+            setPasswordError("Password must be at least 6 characters long");
+        } else {
+            setPasswordError("");
         }
     };
 
@@ -91,7 +106,7 @@ export default function RegistrationScreen() {
                                     style={stylesRegister.lastInput}
                                     placeholder="Пароль"
                                     value={password}
-                                    onChangeText={setPassword}
+                                    onChangeText={validatePassword}
                                     secureTextEntry={!showPassword}
                                 ></TextInput>
                                 <TouchableOpacity

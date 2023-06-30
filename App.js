@@ -6,6 +6,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet } from "react-native";
 import Home from "./components/Home";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./redux/store";
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -20,31 +23,35 @@ export default function App() {
     const MainStack = createStackNavigator();
 
     return (
-        <NavigationContainer style={styleApp.container}>
-            <MainStack.Navigator initialRouteName="Home">
-                <MainStack.Screen
-                    name="Registration"
-                    options={{
-                        headerShown: false,
-                    }}
-                    component={RegistrationScreen}
-                />
-                <MainStack.Screen
-                    name="Login"
-                    options={{
-                        headerShown: false,
-                    }}
-                    component={LoginScreen}
-                />
-                <MainStack.Screen
-                    name="Home"
-                    options={{
-                        headerShown: false,
-                    }}
-                    component={Home}
-                />
-            </MainStack.Navigator>
-        </NavigationContainer>
+        <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+                <NavigationContainer style={styleApp.container}>
+                    <MainStack.Navigator initialRouteName="Login">
+                        <MainStack.Screen
+                            name="Registration"
+                            options={{
+                                headerShown: false,
+                            }}
+                            component={RegistrationScreen}
+                        />
+                        <MainStack.Screen
+                            name="Login"
+                            options={{
+                                headerShown: false,
+                            }}
+                            component={LoginScreen}
+                        />
+                        <MainStack.Screen
+                            name="Home"
+                            options={{
+                                headerShown: false,
+                            }}
+                            component={Home}
+                        />
+                    </MainStack.Navigator>
+                </NavigationContainer>
+            </PersistGate>
+        </Provider>
     );
 }
 const styleApp = StyleSheet.create({

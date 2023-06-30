@@ -14,16 +14,18 @@ import {
 import PlusPhoto from "../assets/svg/PlusPhoto";
 import { useNavigation } from "@react-navigation/native";
 import BackgroundImage from "../assets/image/BackgroundImage.png";
+import { loginDB } from "../redux/operations";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [emailError, setEmailError] = useState("");
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigation = useNavigation();
 
     const deliveryUserData = () => {
-        if (emailError || email === '' || password === '') {
+        if (passwordError || emailError || email === '' || password === '') {
             console.log("Please enter a valid email and password");
             return;
         }
@@ -31,6 +33,7 @@ export default function LoginScreen() {
             email,
             password,
         };
+        dispatch(loginDB(user))
         navigation.navigate("Home", user);
     };
     const validateEmail = (text) => {
@@ -40,6 +43,16 @@ export default function LoginScreen() {
             setEmailError("Email is not correct");
         } else {
             setEmailError("");
+        }
+    };
+
+    const validatePassword = (text) => {
+        setPassword(text);
+        let reg = /^.{6,}$/;
+        if (reg.test(text) === false) {
+            setPasswordError("Password must be at least 6 characters long");
+        } else {
+            setPasswordError("");
         }
     };
 
@@ -80,12 +93,17 @@ export default function LoginScreen() {
                             <View></View>
                             <View>
                                 <TextInput
-                                    style={stylesLogin.lastInput}
+                                    style={{...stylesLogin.lastInput, marginBottom: passwordError ? 5 : 43}}
                                     placeholder="Пароль"
                                     value={password}
-                                    onChangeText={setPassword}
+                                    onChangeText={validatePassword}
                                     secureTextEntry={!showPassword}
                                 ></TextInput>
+                                {passwordError ? (
+                                <Text style={{...stylesLogin.error, marginBottom: 16}}>
+                                    {passwordError}
+                                </Text>
+                            ) : null}
                                 <TouchableOpacity
                                     style={stylesLogin.showPassword}
                                     onPress={togglePasswordVisibility}
@@ -184,7 +202,6 @@ const stylesLogin = StyleSheet.create({
         paddingTop: 16,
         paddingLeft: 16,
         paddingBottom: 15,
-        marginBottom: 43,
         position: "relative",
     },
     showPassword: {
