@@ -18,10 +18,12 @@ const persistConfig = {
   storage: AsyncStorage,
 };
 
-const reducer = persistReducer(persistConfig, authReducer);
+const reducerUser = persistReducer(persistConfig, authReducer);
 
 const store = configureStore({
-  reducer,
+  reducer : {
+    user: reducerUser
+  },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {

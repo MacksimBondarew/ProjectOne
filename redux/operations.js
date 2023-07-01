@@ -1,36 +1,43 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../config";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+import { userId } from "./selectors";
 
 export const registerUser = createAsyncThunk(
     "auth/register",
     async (credentials) => {
         const { email, password } = credentials;
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const user = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+            return user;
         } catch (error) {
             console.log(error);
         }
     }
 );
 
-export const loginDB = createAsyncThunk(
-    "auth/login",
-    async (credentials) => {
-        const { email, password } = credentials;
-        try {
-            const credentials = await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-            return credentials.user;
-        } catch (error) {
-            throw error;
-        }
+export const loginDB = createAsyncThunk("auth/login", async (credentials) => {
+    const { email, password } = credentials;
+    try {
+        const user = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+        return user;
+    } catch (error) {
+        console.log("error");
+        throw error;
     }
-);
-
+});
 
 const updateUserProfile = async (update) => {
     const user = auth.currentUser;

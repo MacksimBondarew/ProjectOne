@@ -15,6 +15,7 @@ import PlusPhoto from "../assets/svg/PlusPhoto";
 import { useNavigation } from "@react-navigation/native";
 import BackgroundImage from "../assets/image/BackgroundImage.png";
 import { loginDB } from "../redux/operations";
+import { useDispatch } from "react-redux";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
@@ -23,6 +24,7 @@ export default function LoginScreen() {
     const [passwordError, setPasswordError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const deliveryUserData = () => {
         if (passwordError || emailError || email === '' || password === '') {
@@ -30,10 +32,10 @@ export default function LoginScreen() {
             return;
         }
         const user = {
-            email,
-            password,
+            email: email.toString(),
+            password: password.toString(),
         };
-        dispatch(loginDB(user))
+        dispatch(loginDB(user));
         navigation.navigate("Home", user);
     };
     const validateEmail = (text) => {
