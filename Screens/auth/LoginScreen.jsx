@@ -166,7 +166,7 @@ const LoginScreen = ({ navigation }) => {
                                             );
                                         }}
                                     >
-                                        {isShowPassword ? "Показать" : "Скрыть"}
+                                        {isShowPassword ? "Показати" : "Заховати"}
                                     </Text>
                                 </View>
                                 <TouchableOpacity
