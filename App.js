@@ -1,20 +1,14 @@
-import { Provider } from "react-redux";
-
-import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
-
-import { View, StyleSheet } from "react-native";
-
-import { store } from "./redux/store";
-
-import { useCallback } from "react";
-
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import LoginScreen from "./Screens/auth/LoginScreen";
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./Screens/mainScreen/Home";
+import { StyleSheet } from "react-native";
+import Home from "./components/Home";
+import { Provider } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import { persistor, store } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,12 +19,6 @@ export default function App() {
         RobotoBold: require("./assets/fonts/Roboto-Bold.ttf"),
     });
 
-    const onLayoutRootView = useCallback(async () => {
-        if (fontsLoaded) {
-            await SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]);
-
     if (!fontsLoaded) {
         return null;
     }
@@ -38,7 +26,7 @@ export default function App() {
     return (
         <>
             <Provider store={store}>
-                <View onLayout={onLayoutRootView} style={styleApp.container}>
+                <PersistGate loading={null} persistor={persistor}>
                     <NavigationContainer style={styleApp.container}>
                         <MainStack.Navigator initialRouteName="Login">
                             <MainStack.Screen
@@ -56,7 +44,7 @@ export default function App() {
                                 component={LoginScreen}
                             />
                             <MainStack.Screen
-                                name="Main"
+                                name="Home"
                                 options={{
                                     headerShown: false,
                                 }}
@@ -64,20 +52,20 @@ export default function App() {
                             />
                         </MainStack.Navigator>
                     </NavigationContainer>
-                </View>
+                </PersistGate>
             </Provider>
         </>
     );
 }
 
 const styleApp = StyleSheet.create({
-  container: {
-      flex: 1,
-      alignItems: "flex-start",
-      justifyContent: "flex-start",
-      paddingRight: 16,
-      paddingLeft: 16,
-      paddingTop: 32,
-      backgroundColor: "#FFFFFF",
-  },
+    container: {
+        flex: 1,
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+        paddingRight: 16,
+        paddingLeft: 16,
+        paddingTop: 32,
+        backgroundColor: "#FFFFFF",
+    },
 });

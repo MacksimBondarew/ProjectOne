@@ -117,22 +117,20 @@ const ProfileScreen = ({ navigation, route }) => {
               <View style={styles.imgBox}>
                 <Image
                   style={styles.avatar}
-                  // source={require("../../assets/image/avatar.png")}
                   source={{ uri: photo }}
                 />
               </View>
               <View style={styles.user}>
                 <Text style={styles.name}>{userName}</Text>
-                {/* <Text style={styles.email}>{userEmail}</Text> */}
               </View>
             </View>
             {userPosts.length === 0 ? (
               <View style={styles.textWrapper}>
-                <Text style={styles.text}>Нет публикаций</Text>
+                <Text style={styles.text}>Немає публікацій</Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("Создать публикацию")}
+                  onPress={() => navigation.navigate("СreatePostsScreen")}
                 >
-                  <Text style={styles.aside}>Создать публикацию?</Text>
+                  <Text style={styles.aside}>Створити публікацію?</Text>
                 </TouchableOpacity>
               </View>
             ) : (

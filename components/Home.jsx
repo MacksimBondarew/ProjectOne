@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-import db from "../firebase/config";
-import { getAuth } from "firebase/auth";
-
-import useRoute from "../router";
 import { authStateCahngeUser } from "../redux/auth/authOperations";
 import MapScreen from "../Screens/nestedScreens/MapScreen";
 import ProfileScreen from "../Screens/mainScreen/ProfileScreen";
@@ -17,11 +13,7 @@ import CommentsScreen from "../Screens/nestedScreens/CommentsScreen";
 import CreatePostsScreen from "../Screens/mainScreen/CreatePostsScreen";
 import PostsScreen from "../Screens/mainScreen/PostsScreen";
 
-const auth = getAuth(db);
-
 const Home = () => {
-    const { stateChange } = useSelector((state) => state.auth);
-
     const dispatch = useDispatch();
 
     useEffect(() => {

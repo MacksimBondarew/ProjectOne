@@ -63,7 +63,7 @@ const CommentsScreen = ({ route, navigation }) => {
 
     const createPost = async () => {
         if (!comment.trim()) {
-            Alert.alert("Комментарий не может быть пустым");
+            Alert.alert("Коментар не може бути порожнім");
             return;
         }
         const docRef = await doc(db, "posts", postId);
@@ -97,20 +97,17 @@ const CommentsScreen = ({ route, navigation }) => {
     };
 
     return (
-        // <TouchableWithoutFeedback onPress={keyboardHide}>
 
         <View style={styles.container}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
                 <View
-                    // style={styles.postWrapper}
                     style={{
                         ...styles.postWrapper,
 
                         ...Platform.select({
                             ios: {
-                                // marginTop: isShowKeyboard ? -300 : 0,
                                 marginBottom: isShowKeyboard ? 145 : 0,
                             },
                             android: {
@@ -130,7 +127,6 @@ const CommentsScreen = ({ route, navigation }) => {
                                         <View style={styles.wrapperComment}>
                                             <Image
                                                 style={styles.avatar}
-                                                // source={require("../../assets/image/avatar.png")}
                                                 source={{ uri: avatar }}
                                             />
                                             <View
@@ -163,14 +159,12 @@ const CommentsScreen = ({ route, navigation }) => {
                     <View style={styles.inputWrapper}>
                         <TextInput
                             placeholderTextColor={"#BDBDBD"}
-                            placeholder="Комментировать..."
-                            // style={styles.input}
+                            placeholder="Коментувати..."
                             style={{
                                 ...styles.input,
 
                                 ...Platform.select({
                                     ios: {
-                                        // marginTop: isShowKeyboard ? -300 : 0,
                                         marginBottom: isShowKeyboard ? 0 : 0,
                                     },
                                     android: {},
@@ -192,13 +186,11 @@ const CommentsScreen = ({ route, navigation }) => {
                                 size={20}
                                 color="#FFFFFF"
                             />
-                            {/* <Text style={styles.buttonText}>Опубликовать</Text> */}
                         </TouchableOpacity>
                     </View>
                 </View>
             </KeyboardAvoidingView>
         </View>
-        // {/* </TouchableWithoutFeedback> */}
     );
 };
 

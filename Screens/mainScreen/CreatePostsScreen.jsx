@@ -91,10 +91,7 @@ const CreatePostsScreen = ({ navigation }) => {
     const uniquePostId = Date.now().toString();
     const storageRef = ref(storage, `postImage/${uniquePostId}`);
 
-    const data = await uploadBytes(storageRef, file);
-
     const getStorageRef = await getDownloadURL(storageRef);
-    // console.log(getStorageRef, "getStorageRef");
 
     return getStorageRef;
   };
@@ -123,7 +120,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
   const sendPhoto = () => {
     if (!photo) {
-      Alert.alert("Загрузите фото");
+      Alert.alert("Завантажте фото");
       return;
     }
     uploadPostToServer();
@@ -154,7 +151,7 @@ const CreatePostsScreen = ({ navigation }) => {
                   <View style={styles.previewPhotoContainer}>
                     <Image
                       source={{ uri: photo }}
-                      // style={{ height: 100, width: 100, position: "absolute" }}
+                      
                       style={styles.previewPhoto}
                     />
                   </View>
@@ -164,14 +161,14 @@ const CreatePostsScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </Camera>
               {photo ? (
-                <Text style={styles.text}>Редактировать фото</Text>
+                <Text style={styles.text}>Редагувати фото</Text>
               ) : (
-                <Text style={styles.text}>Загрузите фото</Text>
+                <Text style={styles.text}>Завантажте фото</Text>
               )}
               <View>
                 <TextInput
                   placeholderTextColor={"#BDBDBD"}
-                  placeholder="Название..."
+                  placeholder="Назва..."
                   style={styles.input}
                   value={comment}
                   onChangeText={(value) => setComment(value)}
@@ -181,7 +178,7 @@ const CreatePostsScreen = ({ navigation }) => {
 
                 <TextInput
                   placeholderTextColor={"#BDBDBD"}
-                  placeholder="Местность..."
+                  placeholder="Місцевість..."
                   style={styles.inputLocation}
                   value={locationName}
                   onChangeText={(value) => setLocationName(value)}
@@ -202,7 +199,6 @@ const CreatePostsScreen = ({ navigation }) => {
               <View style={styles.tabBarWrapper}></View>
               {photo ? (
                 <TouchableOpacity
-                  // style={styles.buttonActive}
                   style={{
                     ...styles.buttonActive,
                     marginTop: isShowKeyboard ? 30 : 120,
@@ -210,11 +206,10 @@ const CreatePostsScreen = ({ navigation }) => {
                   activeOpacity={0.8}
                   onPress={sendPhoto}
                 >
-                  <Text style={styles.buttonTextActive}>Опубликовать</Text>
+                  <Text style={styles.buttonTextActive}>Опубліковати</Text>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  // style={styles.button}
                   style={{
                     ...styles.button,
                     marginTop: isShowKeyboard ? 30 : 120,
@@ -227,7 +222,6 @@ const CreatePostsScreen = ({ navigation }) => {
               )}
 
               <TouchableOpacity
-                // style={styles.deleteBtn}
                 style={{
                   ...styles.deleteBtn,
                   marginTop: isShowKeyboard ? 20 : 50,
@@ -262,17 +256,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 8,
   },
-  // headerWrapper: {
-  //   justifyContent: "flex-end",
-  //   alignItems: "center",
-  //   height: 88,
-  //   borderBottomWidth: 1,
-  //   borderBottomColor: "#BDBDBD",
-  // },
-  // headerText: {
-  //   marginBottom: 11,
-  //   fontSize: 17,
-  // },
   fotoBox: {
     backgroundColor: "#F6F6F6",
     width: 343,
@@ -347,7 +330,6 @@ const styles = StyleSheet.create({
     height: 25,
   },
   button: {
-    // marginTop: 120,
     backgroundColor: "#F6F6F6",
     fontFamily: "RobotoRegular",
     fontStyle: "normal",
