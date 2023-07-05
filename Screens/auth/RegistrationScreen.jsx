@@ -115,7 +115,7 @@ const RegistrationScreen = ({ navigation }) => {
             };
 
             dispatch(authSignUpUser(user));
-
+            navigation.navigate("Home");
             setState(initialState);
             setPhoto(null);
             setVisible(false);

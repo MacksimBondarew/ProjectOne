@@ -1,5 +1,4 @@
 import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import LoginScreen from "./Screens/auth/LoginScreen";
 import RegistrationScreen from "./Screens/auth/RegistrationScreen";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -9,8 +8,6 @@ import { Provider } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { persistor, store } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-
-SplashScreen.preventAutoHideAsync();
 
 export default function App() {
     const [fontsLoaded] = useFonts({
