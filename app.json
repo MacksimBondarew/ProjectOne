@@ -1,18 +1,15 @@
 {
   "expo": {
-    "name": "Project",
-    "slug": "Project",
+    "name": "ProjectOne",
+    "slug": "ProjectOne",
     "version": "1.0.0",
-    "orientation": "default",
+    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
@@ -23,17 +20,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.maxim_bondarew.Project"
+        "backgroundColor": "#ffffff"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "1d0d7d42-2ead-4511-9e0d-bdf6f1803371"
-      }
     }
   }
 }

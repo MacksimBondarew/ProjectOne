@@ -1,25 +1,16 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import CreatePostsScreen from "./CreatePostsScreen";
+import Profile from "./Profile";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import PostsScreen from "./PostsScreen";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import CommentsScreen from "./CommentsScreen";
+import MapScreen from "./MapScreen";
 
-import { authStateCahngeUser } from "../redux/auth/authOperations";
-import MapScreen from "../Screens/nestedScreens/MapScreen";
-import ProfileScreen from "../Screens/mainScreen/ProfileScreen";
-import CommentsScreen from "../Screens/nestedScreens/CommentsScreen";
-import CreatePostsScreen from "../Screens/mainScreen/CreatePostsScreen";
-import PostsScreen from "../Screens/mainScreen/PostsScreen";
-
-const Home = () => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(authStateCahngeUser());
-    }, []);
-
+export default function Home() {
     const Tabs = createBottomTabNavigator();
     const navigation = useNavigation();
     return (
@@ -145,12 +136,14 @@ const Home = () => {
                         borderBottomColor: "#E5E5E5",
                     },
                     tabBarIcon: () => null,
-                    tabBarButton: () => null,
+                    tabBarButton: () => null, 
                     tabBarStyle: { display: "none" },
                     headerLeft: () => (
                         <TouchableOpacity>
                             <AntDesign
-                                onPress={() => navigation.navigate("Profile")}
+                                onPress={() =>
+                                    navigation.navigate("Profile")
+                                }
                                 name="arrowleft"
                                 size={24}
                                 color="black"
@@ -175,9 +168,9 @@ const Home = () => {
                     headerShown: false,
                 }}
                 name="Profile"
-                component={ProfileScreen}
+                component={Profile}
             />
-            <Tabs.Screen
+                        <Tabs.Screen
                 options={{
                     title: "Карта",
                     headerStyle: {
@@ -196,12 +189,14 @@ const Home = () => {
                         borderBottomColor: "#E5E5E5",
                     },
                     tabBarIcon: () => null,
-                    tabBarButton: () => null,
+                    tabBarButton: () => null, 
                     tabBarStyle: { display: "none" },
                     headerLeft: () => (
                         <TouchableOpacity>
                             <AntDesign
-                                onPress={() => navigation.navigate("Profile")}
+                                onPress={() =>
+                                    navigation.navigate("Profile")
+                                }
                                 name="arrowleft"
                                 size={24}
                                 color="black"
@@ -215,6 +210,4 @@ const Home = () => {
             />
         </Tabs.Navigator>
     );
-};
-
-export default Home;
+}
