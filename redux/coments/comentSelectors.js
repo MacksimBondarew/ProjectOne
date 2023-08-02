@@ -1,0 +1,1 @@
+export const selectComent = state => state.coment.coment;

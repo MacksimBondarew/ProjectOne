@@ -15,8 +15,6 @@ import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
-import { userId } from "../redux/selectors";
 
 export default function CreatePostsScreen() {
     const [hasPermission, setHasPermission] = useState(null);
@@ -35,8 +33,6 @@ export default function CreatePostsScreen() {
         setLocationName("");
         setCameraImg("");
     };
-
-    console.log(useSelector(userId));
 
     useEffect(() => {
         (async () => {

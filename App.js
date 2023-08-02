@@ -6,9 +6,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet } from "react-native";
 import Home from "./components/Home";
-import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import store, { persistor } from "./redux/store";
+import { useEffect } from "react";
+import { authStateChangeUser } from "./redux/auth/authOperations";
+import { persistor, store } from "./redux/store";
+import { Provider, useDispatch } from "react-redux";
+const MainStack = createStackNavigator();
 
 export default function App() {
     const [fontsLoaded] = useFonts({
@@ -20,7 +23,11 @@ export default function App() {
         return null;
     }
 
-    const MainStack = createStackNavigator();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(authStateChangeUser());
+    }, [])
 
     return (
         <Provider store={store}>

@@ -9,12 +9,12 @@ import {
     Platform,
     TouchableWithoutFeedback,
     ImageBackground,
-    Keyboard
+    Keyboard,
 } from "react-native";
 import PlusPhoto from "../assets/svg/PlusPhoto";
 import { useNavigation } from "@react-navigation/native";
 import BackgroundImage from "../assets/image/BackgroundImage.png";
-import { loginDB } from "../redux/operations";
+import { authSignInUser } from "../redux/auth/authOperations";
 import { useDispatch } from "react-redux";
 
 export default function LoginScreen() {
@@ -26,18 +26,17 @@ export default function LoginScreen() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    const deliveryUserData = () => {
-        if (passwordError || emailError || email === '' || password === '') {
-            console.log("Please enter a valid email and password");
-            return;
-        }
-        const user = {
-            email: email.toString(),
-            password: password.toString(),
-        };
-        dispatch(loginDB(user));
-        navigation.navigate("Home", user);
+    const onSubmitUserLogin = () => {
+        if (!email.trim() || !password.trim())
+            return console.warn("Будь ласка заповніть поля");
+
+        dispatch(authSignInUser(email, password));
+
+        handleKeyboardHide();
+        navigation.navigate("Home", { user: { email, password } });
+        clearUserForm();
     };
+
     const validateEmail = (text) => {
         setEmail(text);
         let reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -95,17 +94,25 @@ export default function LoginScreen() {
                             <View></View>
                             <View>
                                 <TextInput
-                                    style={{...stylesLogin.lastInput, marginBottom: passwordError ? 5 : 43}}
+                                    style={{
+                                        ...stylesLogin.lastInput,
+                                        marginBottom: passwordError ? 5 : 43,
+                                    }}
                                     placeholder="Пароль"
                                     value={password}
                                     onChangeText={validatePassword}
                                     secureTextEntry={!showPassword}
                                 ></TextInput>
                                 {passwordError ? (
-                                <Text style={{...stylesLogin.error, marginBottom: 16}}>
-                                    {passwordError}
-                                </Text>
-                            ) : null}
+                                    <Text
+                                        style={{
+                                            ...stylesLogin.error,
+                                            marginBottom: 16,
+                                        }}
+                                    >
+                                        {passwordError}
+                                    </Text>
+                                ) : null}
                                 <TouchableOpacity
                                     style={stylesLogin.showPassword}
                                     onPress={togglePasswordVisibility}
@@ -120,7 +127,7 @@ export default function LoginScreen() {
                         </KeyboardAvoidingView>
                         <TouchableOpacity
                             style={stylesLogin.buttonForm}
-                            onPress={deliveryUserData}
+                            onPress={onSubmitUserLogin}
                         >
                             <Text style={stylesLogin.textButton}>Увійти</Text>
                         </TouchableOpacity>
