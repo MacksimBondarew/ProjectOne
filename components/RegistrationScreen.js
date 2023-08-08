@@ -10,6 +10,7 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     ImageBackground,
+    Image,
 } from "react-native";
 import PlusPhoto from "../assets/svg/PlusPhoto";
 import BackgroundImage from "../assets/image/BackgroundImage.png";
@@ -18,6 +19,12 @@ import { useDispatch } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import { authSignUpUser } from "../redux/auth/authOperations";
 import { authStateChange } from "../redux/auth/authSlice";
+
+import { app } from "../config";
+
+import { uploadBytes, ref, getDownloadURL, getStorage } from "firebase/storage";
+
+const storage = getStorage(app);
 
 export default function RegistrationScreen() {
     const [email, setEmail] = useState("");
@@ -63,7 +70,6 @@ export default function RegistrationScreen() {
         const photo = avatar
             ? await uploadImageToServer(avatar, "avatars")
             : "https://firebasestorage.googleapis.com/v0/b/first-react-native-proje-98226.appspot.com/o/userAvatars%2FDefault_pfp.svg.png?alt=media&token=7cafd3a4-f9a4-40f2-9115-9067f5a15f57";
-
         dispatch(authSignUpUser({ photo, login, email, password })).then(
             (data) => {
                 if (data === undefined || !data.uid) {
@@ -73,7 +79,7 @@ export default function RegistrationScreen() {
                 dispatch(authStateChange({ stateChange: true }));
             }
         );
-        navigation.navigate("Home", user);
+        navigation.navigate("Home");
     };
 
     const onLoadAvatar = async () => {
@@ -103,7 +109,7 @@ export default function RegistrationScreen() {
                 const file = await response.blob();
 
                 const imageRef = await ref(
-                    myStorage,
+                    storage,
                     `${prefixFolder}/${uniquePostId}`
                 );
 
@@ -115,6 +121,27 @@ export default function RegistrationScreen() {
             } catch (error) {
                 console.warn("uploadImageToServer: ", error);
             }
+        }
+    };
+
+    const uploadPhotoToServer = async () => {
+        try {
+            const response = await fetch(photo.uri);
+
+            const file = await response.blob();
+
+            const uniquePostId = Date.now().toString();
+            const storageRef = ref(
+                storage,
+                `profileAvatar/${uniquePostId}/${file.data.name}`
+            );
+            uploadBytes(storageRef, file);
+
+            const getStorageRef = await getDownloadURL(storageRef);
+
+            return getStorageRef;
+        } catch (error) {
+            console.log(error);
         }
     };
 

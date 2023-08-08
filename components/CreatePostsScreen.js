@@ -6,6 +6,7 @@ import {
     Keyboard,
     Image,
 } from "react-native";
+import * as Location from "expo-location";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { TextInput } from "react-native";
@@ -13,10 +14,20 @@ import { Feather } from "@expo/vector-icons";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
-import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
+import { getFirestore, collection, addDoc, setDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { app, db } from "../config";
+import { useSelector } from "react-redux";
+import { selectLogin, selectUserId } from "../redux/auth/authSelectors";
+
+const storage = getStorage(app);
+
+const cloudDB = getFirestore(app);
 
 export default function CreatePostsScreen() {
+    const userName = useSelector(selectLogin);
+    const userId = useSelector(selectUserId);
     const [hasPermission, setHasPermission] = useState(null);
     const [cameraRef, setCameraRef] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
@@ -57,6 +68,37 @@ export default function CreatePostsScreen() {
         return resetForm();
     }, []);
 
+    const uploadPhotoToServer = async () => {
+        const response = await fetch(cameraImg);
+
+        const file = await response.blob();
+
+        const uniquePostId = Date.now().toString();
+        const storageRef = ref(storage, `postImage/${uniquePostId}`);
+
+        await uploadBytes(storageRef, file);
+
+        const getStorageRef = await getDownloadURL(storageRef);
+
+        return getStorageRef;
+    };
+
+    const uploadPostToServer = async () => {
+        try {
+            const photo = await uploadPhotoToServer();
+            await addDoc(collection(db, "posts"), {
+                photo,
+                name,
+                location,
+                locationName,
+                userId,
+                userName,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     if (hasPermission === null) {
         return <View />;
     }
@@ -70,6 +112,13 @@ export default function CreatePostsScreen() {
             await MediaLibrary.createAssetAsync(uri);
             setCameraImg(uri);
         }
+        let location = await Location.getCurrentPositionAsync({});
+        const coords = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+        };
+
+        setLocation(coords);
     };
 
     createImageAgain = async () => {
@@ -86,17 +135,14 @@ export default function CreatePostsScreen() {
             name === "" ||
             locationName === "" ||
             cameraImg === "" ||
-            location === ""
+            location === "" ||
+            !cameraImg
         ) {
             return;
         } else {
-            let postUser = {
-                cameraImg,
-                location,
-                name,
-                locationName,
-            };
-            navigation.navigate("PostsScreen", postUser);
+            uploadPostToServer();
+            // resetForm();
+            navigation.navigate("PostsScreen");
         }
     };
     const validateLocation = (text) => {
@@ -177,7 +223,9 @@ export default function CreatePostsScreen() {
                     </Camera>
                 )}
 
-                <Text style={styleCreatePostsScreen.text}>{cameraImg ? "Редагувати фото" : "Завантажте фото"}</Text>
+                <Text style={styleCreatePostsScreen.text}>
+                    {cameraImg ? "Редагувати фото" : "Завантажте фото"}
+                </Text>
                 <TextInput
                     style={{ ...styleCreatePostsScreen.nameInput }}
                     placeholder="Назва..."
@@ -217,10 +265,10 @@ export default function CreatePostsScreen() {
                     style={{
                         ...styleCreatePostsScreen.buttonPublish,
                         backgroundColor:
-                        name === "" ||
-                        locationName === "" ||
-                        cameraImg === "" ||
-                        location === ""
+                            name === "" ||
+                            locationName === "" ||
+                            cameraImg === "" ||
+                            location === ""
                                 ? "#F6F6F6"
                                 : "#FF6C00",
                     }}
@@ -230,10 +278,10 @@ export default function CreatePostsScreen() {
                         style={{
                             ...styleCreatePostsScreen.textButtom,
                             color:
-                            name === "" ||
-                            locationName === "" ||
-                            cameraImg === "" ||
-                            location === ""
+                                name === "" ||
+                                locationName === "" ||
+                                cameraImg === "" ||
+                                location === ""
                                     ? "gray"
                                     : "white",
                         }}

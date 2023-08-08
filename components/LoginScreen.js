@@ -31,10 +31,7 @@ export default function LoginScreen() {
             return console.warn("Будь ласка заповніть поля");
 
         dispatch(authSignInUser(email, password));
-
-        handleKeyboardHide();
         navigation.navigate("Home", { user: { email, password } });
-        clearUserForm();
     };
 
     const validateEmail = (text) => {
@@ -69,10 +66,6 @@ export default function LoginScreen() {
             >
                 <View style={stylesLogin.container}>
                     <View style={stylesLogin.form}>
-                        <View style={stylesLogin.image}></View>
-                        <TouchableOpacity>
-                            <PlusPhoto style={stylesLogin.icon} />
-                        </TouchableOpacity>
                         <Text style={stylesLogin.title}>Увійти</Text>
                         <KeyboardAvoidingView
                             behavior={
@@ -164,7 +157,7 @@ const stylesLogin = StyleSheet.create({
     form: {
         position: "relative",
         paddingBottom: 78,
-        paddingTop: 92,
+        paddingTop: 70,
         paddingRight: 16,
         paddingLeft: 16,
         width: "100%",

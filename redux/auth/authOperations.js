@@ -2,8 +2,8 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     updateProfile,
-    onAuthStateChanged,
     signOut,
+    onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../config";
 import { updateUserProfile, authStateChange, authSignOut } from "./authSlice";
@@ -18,21 +18,16 @@ export const authSignUpUser =
 
             await updateProfile(user, {
                 displayName: login,
-                avatar: photo,
+                photoURL: photo,
             });
 
-            const {
-                uid,
-                displayName,
-                email: emailBase,
-                avatar: photoUrlBase,
-            } = auth.currentUser;
+            const { uid, displayName, photoURL } = auth.currentUser;
 
             const userProfile = {
                 userId: uid,
                 login: displayName,
-                email: emailBase,
-                avatar: photoUrlBase,
+                email: email,
+                avatar: photoURL,
             };
 
             dispatch(updateUserProfile(userProfile));
@@ -82,20 +77,25 @@ export const authUpdateUser =
         }
     };
 
-export const authStateChangeUser = () => async (dispatch, state) => {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const userProfile = {
-                userId: user.uid,
-                login: user.displayName,
-                email: user.email,
-                avatar: user.photoURL,
-            };
+export const authStateChangeUser = () => async (dispatch, getState) => {
+    try {
+        await onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userUpdateProfile = {
+                    userName: user.displayName,
+                    userEmail: user.email,
+                    userId: user.uid,
+                    userEmail: user.email,
+                    photo: user.photoURL,
+                };
 
-            dispatch(authStateChange({ stateChange: true }));
-            dispatch(updateUserProfile(userProfile));
-        }
-    });
+                dispatch(authStateChange({ stateChange: true }));
+                dispatch(updateUserProfile(userUpdateProfile));
+            }
+        });
+    } catch (error) {
+        throw error;
+    }
 };
 
 export const authSignOutUser = () => async (dispatch, state) => {

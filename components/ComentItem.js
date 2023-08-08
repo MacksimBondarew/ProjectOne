@@ -1,20 +1,19 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Image, View, Text } from "react-native";
-import test from "../assets/image/test.png";
+import { useSelector } from "react-redux";
+import { selectAvatar } from "../redux/auth/authSelectors";
 
 export default function ComentItem({ text, time }) {
+    const avatar = useSelector(selectAvatar)
+
     return (
         <View style={styleComentar.comentarFromUser}>
-            <Image style={styleComentar.avatarUser} source={test} />
             <View style={styleComentar.blockComentarForUser}>
-                <Text style={styleComentar.textComent}>
-                    {text}
-                </Text>
-                <Text style={styleComentar.timeForUser}>
-                    {time}
-                </Text>
+                <Text style={styleComentar.textComent}>{text}</Text>
+                <Text style={styleComentar.timeFromUser}>{time}</Text>
             </View>
+            <Image style={styleComentar.avatarUserRight} source={{uri: avatar}} />
         </View>
     );
 }
@@ -40,10 +39,24 @@ const styleComentar = StyleSheet.create({
     },
     blockComentarForUser: {
         padding: 16,
-        width: "90%",
+        width: "87%",
 
         backgroundColor: "rgba(0, 0, 0, 0.03)",
         borderRadius: 6,
+    },
+    input: {
+        width: "100%",
+        height: 50,
+        paddingLeft: 16,
+        paddingTop: 16,
+        paddingBottom: 15,
+        borderRadius: 50,
+        borderColor: "#BDBDBD",
+        borderWidth: 2,
+        color: "#BDBDBD",
+        backgroundColor: "#F6F6F6",
+        fontSize: 16,
+        fontFamily: "Roboto",
     },
     textComent: {
         color: "#212121",

@@ -9,13 +9,17 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import CommentsScreen from "./CommentsScreen";
 import MapScreen from "./MapScreen";
+import { useDispatch } from "react-redux";
+import { authSignOutUser } from "../redux/auth/authOperations";
 
 export default function Home() {
+    const dispatch = useDispatch();
+
     const Tabs = createBottomTabNavigator();
     const navigation = useNavigation();
     return (
         <Tabs.Navigator
-            initialRouteName="PostsScreen"
+            initialRouteName="Home"
             screenOptions={{
                 tabBarStyle: {
                     height: 80,
@@ -53,9 +57,17 @@ export default function Home() {
                     },
                     headerLeft: null,
                     headerRight: () => (
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("Login");
+                                dispatch(authSignOutUser);
+                            }}
+                        >
                             <Ionicons
-                                onPress={() => navigation.navigate("Login")}
+                                onPress={() => {
+                                    navigation.navigate("Login");
+                                    dispatch(authSignOutUser);
+                                }}
                                 name="exit-outline"
                                 size={24}
                                 color="#BDBDBD"
@@ -136,14 +148,12 @@ export default function Home() {
                         borderBottomColor: "#E5E5E5",
                     },
                     tabBarIcon: () => null,
-                    tabBarButton: () => null, 
+                    tabBarButton: () => null,
                     tabBarStyle: { display: "none" },
                     headerLeft: () => (
                         <TouchableOpacity>
                             <AntDesign
-                                onPress={() =>
-                                    navigation.navigate("Profile")
-                                }
+                                onPress={() => navigation.navigate("Home")}
                                 name="arrowleft"
                                 size={24}
                                 color="black"
@@ -170,7 +180,7 @@ export default function Home() {
                 name="Profile"
                 component={Profile}
             />
-                        <Tabs.Screen
+            <Tabs.Screen
                 options={{
                     title: "Карта",
                     headerStyle: {
@@ -189,14 +199,12 @@ export default function Home() {
                         borderBottomColor: "#E5E5E5",
                     },
                     tabBarIcon: () => null,
-                    tabBarButton: () => null, 
+                    tabBarButton: () => null,
                     tabBarStyle: { display: "none" },
                     headerLeft: () => (
                         <TouchableOpacity>
                             <AntDesign
-                                onPress={() =>
-                                    navigation.navigate("Profile")
-                                }
+                                onPress={() => navigation.navigate("Profile")}
                                 name="arrowleft"
                                 size={24}
                                 color="black"

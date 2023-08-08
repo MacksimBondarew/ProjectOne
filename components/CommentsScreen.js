@@ -1,39 +1,101 @@
 import React from "react";
-import { Image, View, Text, FlatList } from "react-native";
+import { format } from "date-fns";
+import { en } from "date-fns/locale";
+import { Image, View, FlatList, Alert } from "react-native";
 import { StyleSheet } from "react-native";
-import BackgroundImage from "../assets/image/BackgroundImage.png";
-import test from "../assets/image/test.png";
 import { TextInput } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import ComentItem from "./ComentItem";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectLogin } from "../redux/auth/authSelectors";
+import { useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 
-export default function CommentsScreen() {
-    const DATA = [
-        {
-            text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
-            time: "09 червня, 2020 | 08:40",
-            id: "45k6-j54k-4jth",
-        },
-        {
-            text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
-            time: "09 червня, 2020 | 09:14",
-            id: "4116-jfk5-43rh",
-        },
-        {
-            text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
-            time: "09 червня, 2020 | 09:20",
-            id: "4d16-5tt5-4j55",
-        },
-    ];
+import { app } from "../config";
+import {
+    getFirestore,
+    doc,
+    collection,
+    addDoc,
+    onSnapshot,
+} from "firebase/firestore";
+
+const db = getFirestore(app);
+
+const formatDate = (date) => {
+    return format(Date.parse(date), "dd MMMM, yyyy | HH:mm:ss", {
+        locale: en,
+    });
+};
+
+export default function CommentsScreen({ route }) {
+    const navigation = useNavigation();
+    const { postId, postImg } = route.params;
+    const [comment, setComment] = useState("");
+    const [allComments, setAllComments] = useState([]);
+    const [commentsCount, setCommentsCount] = useState(0);
+
+    const userName = useSelector(selectLogin);
+
+    const createComentar = async () => {
+        if (!comment.trim()) {
+            Alert.alert("Комментарий не может быть пустым");
+            return;
+        }
+        const docRef = await doc(db, "posts", postId);
+
+        await addDoc(collection(docRef, "comments"), {
+            comment,
+            userName,
+            postedDate: formatDate(new Date()),
+        });
+
+        setComment("")
+    };
+
+    const getAllPosts = async () => {
+        try {
+            const docRef = await doc(db, "posts", postId);
+
+            onSnapshot(collection(docRef, "comments"), (data) =>
+                setAllComments(
+                    data.docs.map((doc) => ({
+                        ...doc.data(),
+                        postId: doc.id,
+                    }))
+                )
+            );
+
+            setCommentsCount(Number(allComments.length));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getAllPosts();
+    }, []);
+
+    useEffect(() => {
+        navigation.setParams({ commentsCount: commentsCount });
+    }, [commentsCount]);
 
     return (
         <View style={styleComentar.container}>
-            <Image style={styleComentar.image} source={BackgroundImage} />
+            <Image style={styleComentar.image} source={{ uri: postImg }} />
 
             <FlatList
-                data={DATA}
-                renderItem={({ item }) => <ComentItem text={item.text} time={item.time} />}
+                data={allComments}
+                renderItem={({ item, _, index }) => (
+                    <ComentItem
+                        key={index}
+                        text={item.comment}
+                        time={item.postedDate}
+                        postId={postId}
+                    />
+                )}
                 keyExtractor={(item) => item.id}
             />
 
@@ -47,6 +109,8 @@ export default function CommentsScreen() {
                 <TextInput
                     placeholder="Коментувати..."
                     style={styleComentar.input}
+                    onChangeText={(value) => setComment(value)}
+                    value={comment}
                 ></TextInput>
                 <TouchableOpacity
                     style={{
@@ -58,6 +122,7 @@ export default function CommentsScreen() {
                         bottom: "10%",
                         right: "3%",
                     }}
+                    onPress={createComentar}
                 >
                     <AntDesign
                         name="arrowup"
